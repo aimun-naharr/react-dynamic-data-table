@@ -1,0 +1,16 @@
+@font-face {
+  font-family: font-primary;
+  src: url("../assets/fonts/pe0TMImSLYBIv1o4X1M8ce2xCx3yop4tQpF_MeTm0lfGWVpNn64CL7U8upHZIbMV51Q42ptCp7t1R-s.woff2");
+}
+@font-face {
+  font-family: font-primary-2;
+  src: url("../assets/fonts/pe0TMImSLYBIv1o4X1M8ce2xCx3yop4tQpF_MeTm0lfGWVpNn64CL7U8upHZIbMV51Q42ptCp7t1R-s\ \(1\).woff2");
+}
+@font-face {
+  font-family: font-primary-3;
+  src: url("../assets/fonts/pe0TMImSLYBIv1o4X1M8ce2xCx3yop4tQpF_MeTm0lfGWVpNn64CL7U8upHZIbMV51Q42ptCp7t1R-s\ \(2\).woff2");
+}
+
+:root {
+  --body-font: font-primary-3;
+}

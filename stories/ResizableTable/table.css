@@ -1,0 +1,69 @@
+.fixed-and-resize-table-container .resize-and-fixed-table {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+}
+.fixed-and-resize-table-container .resize-and-fixed-table th,
+.fixed-and-resize-table-container .resize-and-fixed-table td {
+  margin-left: 0em;
+  margin-right: 0em;
+  font-size: 12.5px !important;
+  overflow: hidden;
+  white-space: nowrap;
+  -moz-text-overflow: ellipsis;
+  -ms-text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  border: 1px solid lightgray;
+}
+.fixed-and-resize-table-container .resize-and-fixed-table thead {
+  background-color: #f9fafb;
+  top: 0;
+}
+.fixed-and-resize-table-container
+  .resize-and-fixed-table
+  thead
+  tr
+  .table-header {
+  color: #6f7a8d;
+}
+.fixed-and-resize-table-container
+  .resize-and-fixed-table
+  thead
+  tr
+  .table-header
+  p:hover
+  .fixed-icon {
+  display: block;
+}
+.fixed-and-resize-table-container
+  .resize-and-fixed-table
+  thead
+  tr
+  .table-header
+  p
+  .fixed-icon {
+  display: none;
+  position: absolute;
+  right: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+.fixed-and-resize-table-container .resize-and-fixed-table tr .fixed-cell {
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  z-index: 10;
+  background-color: #f1f1f1 !important;
+  outline: 1px solid lightgray;
+  border: none;
+}
+.fixed-and-resize-table-container
+  .resize-and-fixed-table
+  tr
+  .fixed-cell:last-child {
+  /* background-color: red !important; */
+}
+.fixed-and-resize-table-container .resize-and-fixed-table tr:hover {
+  background-color: rgba(102, 51, 153, 0.055);
+}
