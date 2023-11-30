@@ -1,11 +1,13 @@
 import PropTypes from 'prop-types';
 import { Fragment, useEffect, useLayoutEffect, useState } from 'react';
 import { randomIdGenerator } from '../../utility/utils';
+import SmallTable from './SmallTable';
 import ResizableTable from './table-widgets/ColumnResizer';
 import TH from './table-widgets/TH';
+import TR from './table-widgets/TR';
 import Pagination from './table-widgets/custom-pagination';
+import useMediaQuery from './table-widgets/custom-pagination/hooks/useMediaQuery';
 import './table.css';
-
 
 
 
@@ -13,37 +15,38 @@ const DynamicDataTable = ( props ) => {
     const {
         tableId,
         columns = [],
-        data,
+        data = [],
         expandableRows = false,
         expandIcon,
         onSort,
         sortServer = false,
         paginationServer = false,
-        className,
+        className = '',
         filter = false,
         filterArray = [],
         columnCache = false,
-        rowPerPage = 5,
+        rowPerPage = 10,
+        progressPending,
+        selectableRows = false,
+        onSelectedRowsChange,
+        selectableRowSelected,
         ExpandedComponent } = props;
-    const totalPages = Math.ceil( data.length / rowPerPage );
 
-    const allData = data.map( d => {
-        return { ...d, rowId: randomIdGenerator() };
-    } );
+    const allData = data?.map( d => (
+        { ...d, rowId: randomIdGenerator(), isSelected: false }
+    ) );
+    const isSmallScreen = useMediaQuery( "(max-width: 800px)" );
     const cachedCols = JSON.parse( localStorage.getItem( tableId ) ) ?? [];
-
+    const columnsModified = columns.map( c => ( { ...c, sortingOrder: 'asc' } ) );
 
     //states
-    const [allColumns, setAllColumns] = useState( cachedCols?.length ? cachedCols : [...columns] );
+    const [allColumns, setAllColumns] = useState( cachedCols?.length ? cachedCols : [...columnsModified] );
     const fixedColumns = allColumns?.filter( el => el.isFixed );
     const resizeColumns = allColumns?.filter( el => !el.isFixed );
-    const getData = () => {
-        return allData;
-    };
+
     const [columnsData, setColumnsData] = useState( [...allData] ); //states for table data
     const [currentPage, setCurrentPage] = useState( 1 );
     const [fixedWidthArr, setFixedWidthArr] = useState( [] ); //stores fixed column widths
-
 
     //gets widths of all fixed columns and stores it in an array
     const getWidthOfFixedColumns = () => {
@@ -60,6 +63,8 @@ const DynamicDataTable = ( props ) => {
     useLayoutEffect( () => {
         getWidthOfFixedColumns();
     }, [fixedColumns?.length] );
+
+
     useEffect( () => {
         if ( columnCache && !cachedCols?.length ) {
             localStorage.setItem( tableId, JSON.stringify( [...fixedColumns, ...resizeColumns] ) );
@@ -67,78 +72,49 @@ const DynamicDataTable = ( props ) => {
             setAllColumns( cachedCols );
         }
     }, [] );
+
+
     useEffect( () => {
         setColumnsData( allData );
-    }, [allData.length] );
+    }, [data] );
+
 
     const mergedColumns = [...fixedColumns, ...resizeColumns]; // table columns
-
-
-    //handles expandable row functionality
-    const handleExpandedRow = ( col, index ) => {
-        if ( col?.expanded ) {
-            const updatedRows = columnsData.map( c => {
-                if ( c.rowId === col.rowId ) {
-                    return { ...c, expanded: false };
-                }
-                return c;
-            } );
-            setColumnsData( updatedRows );
-
-        } else {
-            const updatedRows = columnsData.map( c => {
-                if ( c.rowId === col.rowId ) {
-                    return { ...c, expanded: true };
-                }
-                return c;
-            } );
-            setColumnsData( updatedRows );
-        }
-
-    };
-
 
     // handles pagination
     const handlePage = ( page ) => {
         setCurrentPage( page );
     };
 
-    let direction = 'asc'
+
     // sorts tabele data
     const handleSort = ( column ) => {
+        console.log( column.sortingOrder )
+        const direction = column.sortingOrder === 'asc' ? 'desc' : 'asc';
         if ( sortServer ) {
             onSort( column, direction );
-            direction = direction === 'asc' ? 'desc' : 'asc';
         } else {
             if ( column.sortable ) {
                 if ( column.type === 'number' ) {
+                    console.log( column )
                     columnsData.sort( ( a, b ) => {
                         // if sorting order is true it will sort in ascending order
-                        return column.sortingOrder ? a[column.selector] - b[column.selector] : b[column.selector] - a[column.selector];
+                        return column.sortingOrder === 'asc' ? a[column.selector] - b[column.selector] : b[column.selector] - a[column.selector];
                     } );
                 } else if ( column.type === 'date' ) {
                     columnsData.sort( ( a, b ) => {
-                        return column.sortingOrder ? new Date( a[column.selector] ) - new Date( b[column.selector] ) : new Date( b[column.selector] ) - new Date( a[column.selector] );
+                        return column.sortingOrder === 'asc' ? new Date( a[column.selector] ) - new Date( b[column.selector] ) : new Date( b[column.selector] ) - new Date( a[column.selector] );
                     } );
                 } else {
                     columnsData.sort( ( a, b ) => {
                         // console.log( a[column.selector] );
-                        return column.sortingOrder ? a[column.selector].localeCompare( b[column.selector] ) : b[column.selector].localeCompare( a[column.selector] );
+                        return column.sortingOrder === 'asc' ? a[column.selector].localeCompare( b[column.selector] ) : b[column.selector].localeCompare( a[column.selector] );
                     } );
                 }
             }
-            const updatedData = allColumns.map( d => {
-                if ( d.id === column.id ) {
-                    if ( d?.sortingOrder ) {
-                        d['sortingOrder'] = false;
-                    } else {
-                        d['sortingOrder'] = true;
-                    }
-                }
-                return d;
-            } );
-            setAllColumns( updatedData );
+
         }
+        column.sortingOrder = direction;
     };
 
 
@@ -160,26 +136,37 @@ const DynamicDataTable = ( props ) => {
             return value;
         }
     };
+
+
+    const handleSelectAllRows = ( e ) => {
+        const selectedRows = allData.map( d => ( { ...d, isSelected: e.target.checked } ) );
+        setColumnsData( selectedRows );
+        onSelectedRowsChange( selectedRows.filter( s => s.isSelected === true ) );
+    };
+
+
     const indexOfLastData = currentPage * rowPerPage;
     const indexOfFirstData = indexOfLastData - rowPerPage;
-    const dataSlice = columnsData.length > rowPerPage ? [...columnsData].slice( indexOfFirstData, indexOfLastData ) : [...columnsData];
+    const dataSlice = data.length > rowPerPage ? [...columnsData].slice( indexOfFirstData, indexOfLastData ) : [...columnsData];
 
     return (
         <>
             <div
-                className={`fixed-and-resize-table-container ${className ? className : ''}`}
+                className={`fixed-and-resize-table-container
+                ${className ? className : ''}`}
                 id={tableId}
                 style={
                     {
                         overflowX: 'scroll',
-                        overflowY: 'hidden',
+                        overflowY: 'auto',
                         height: 'max-content',
                         minHeight: '200px'
                     }
                 }
             >
-                <ResizableTable
-                    fixed={expandableRows ? fixedColumns?.length + 1 : fixedColumns.length}
+                {!isSmallScreen ? <ResizableTable
+                    fixed={expandableRows && selectableRows ? fixedColumns?.length + 2 : expandableRows || selectableRows ? fixedColumns.length + 1 : 0}
+                    // fixed={0}
                     responsive={true}
                     bordered
                     mainClass={`resizebom-${randomIdGenerator().toString()}`}
@@ -187,29 +174,51 @@ const DynamicDataTable = ( props ) => {
                     className="">
                     <thead>
                         <tr>
+                            {
+                                selectableRows ? <th
+                                    style={{
+                                        width: '40px',
+                                        left: 0,
+                                        position: 'sticky',
+                                        zIndex: 1,
+                                        textAlign: 'center'
+                                    }}
+
+                                    className='fixed-cell table-header fixed-table-column'
+                                >
+                                    <input type='checkbox' onChange={handleSelectAllRows} checked={columnsData.every( elm => elm.isSelected === true )} />
+                                </th> : null
+                            }
+
                             {expandableRows ? <th
                                 style={{
                                     width: '40px',
-                                    left: 0,
+                                    left: selectableRows ? getLeftDistanceOfFixedColumn( 0 ) : 0,
                                     position: 'sticky',
-                                    zIndex: 100
+                                    zIndex: 1
                                 }}
                                 className='fixed-table-column fixed-cell table-header ' >
-                                <div className='empty-container'></div>
                             </th> : null}
                             {mergedColumns?.map( ( column, i ) => (
-                                <TH key={column.id}
-                                    column={column}
-                                    index={i}
-                                    getLeftDistanceOfFixedColumn={getLeftDistanceOfFixedColumn}
-                                    expandableRows={expandableRows}
-                                    handleSort={handleSort}
-                                    setAllColumns={setAllColumns}
-                                    allColumns={allColumns}
-                                    tableId={tableId}
-                                    columnCache={columnCache}
-                                />
+                                <Fragment
+                                    key={column.id}
+                                >
+                                    <TH
+                                        column={column}
+                                        index={i}
+                                        getLeftDistanceOfFixedColumn={getLeftDistanceOfFixedColumn}
+                                        expandableRows={expandableRows}
+                                        handleSort={handleSort}
+                                        setAllColumns={setAllColumns}
+                                        allColumns={allColumns}
+                                        tableId={tableId}
+                                        columnCache={columnCache}
+                                        selectableRows={selectableRows}
+
+                                    />
+                                </Fragment>
                             ) )}
+
                         </tr>
                     </thead>
                     <tbody >
@@ -232,71 +241,57 @@ const DynamicDataTable = ( props ) => {
 
                         </tr>
                         {/* table data========================== */}
-                        {data.length ? dataSlice?.map( ( column, index ) => (
-                            // <TableRows key={column.id}
-                            //     expandableRows={expandableRows}
-                            //     handleExpandedRow={handleExpandedRow}
-                            //     column={column}
-                            //     index={index}
-                            //     expandIcon={expandIcon}
-                            //     mergedColumns={mergedColumns}
-                            //     getLeftDistanceOfFixedColumn={getLeftDistanceOfFixedColumn}
-                            //     columns={columns}
-                            //     ExpandedComponent={ExpandedComponent}
-                            // />
-                            <Fragment key={column.id}>
-                                <tr>
-                                    {expandableRows && <td
-                                        className='fixed-cell'
-                                        style={{ textAlign: 'center', left: 0, cursor: 'pointer', position: 'sticky' }}
-                                        onClick={() => handleExpandedRow( column, index )}
-                                    >
-                                        {expandIcon ? expandIcon : column.expanded ? <span style={{ fontSize: '1.5rem' }}>&#8722;</span> : <span
-                                            style={{ fontSize: '1.5rem' }}>&#43;</span>}
-                                    </td>}
-                                    {
-                                        mergedColumns?.map( ( c, indx ) => (
-                                            <Fragment key={c.id}>
-                                                <td
-                                                    className={`${c.isFixed ? 'fixed-cell' : ''}`}
-                                                    id={`${c.id}${column.rowId?.toString()}d`}
-                                                    style={{
-                                                        width: c.width ?? '',
-                                                        textAlign: c.type === 'action' || c.center ? 'center' : c.type === 'number' ? 'right' : 'left',
-                                                        left: c.isFixed && getLeftDistanceOfFixedColumn( expandableRows ? indx + 1 : indx )
-                                                    }}
-                                                >
-                                                    {c?.cell ? c.cell( column, index ) : column[c.selector]}
-
-                                                </td>
-                                            </Fragment>
-                                        ) )
-                                    }
-                                </tr>
-
-                                {/* expandable component ========================*/}
-                                {column.expanded ? <tr
-                                    key={`${column.id}${index}`}
-                                >
-                                    <td
-                                        style={{ position: 'sticky', left: 0 }}
-                                        colSpan={columns.length + 1} >
-                                        <div className='expandable-component'>
-                                            {ExpandedComponent ? <ExpandedComponent data={column} /> : <p>Add a custom component in ExpandedComponent prop</p>}
-                                        </div>
-                                    </td>
-                                </tr> : null}
-
+                        {progressPending ? <tr>
+                            <td colSpan={expandableRows || selectableRows ? columns.length + 1 : columns.length} >
+                                <p>loading...</p></td>
+                        </tr> : data.length ? dataSlice?.map( ( row, index ) => (
+                            <Fragment key={row.rowId}>
+                                <TR
+                                    expandableRows={expandableRows}
+                                    expandIcon={expandIcon}
+                                    row={row}
+                                    index={index}
+                                    mergedColumns={mergedColumns}
+                                    getLeftDistanceOfFixedColumn={getLeftDistanceOfFixedColumn}
+                                    ExpandedComponent={ExpandedComponent}
+                                    selectableRows={selectableRows}
+                                    columnsData={columnsData}
+                                    setColumnsData={setColumnsData}
+                                    onSelectedRowsChange={onSelectedRowsChange}
+                                    selectableRowSelected={selectableRowSelected}
+                                />
                             </Fragment>
                         ) ) : <tr >
-                            <td colSpan={expandableRows ? columns.length + 1 : columns.length} style={{ textAlign: 'center', paddingTop: '40px' }}>
+                            <td
+                                colSpan={expandableRows ? columns.length + 1 : columns.length} style={{
+                                    textAlign: 'center',
+                                    paddingTop: '40px'
+                                }}>
                                 There is no data to show
                             </td>
                         </tr>}
 
 
                     </tbody>
-                </ResizableTable>
+                </ResizableTable> : <SmallTable
+                    mergedColumns={mergedColumns}
+                    expandableRows={expandableRows}
+                    handleSort={handleSort}
+                    setAllColumns={setAllColumns}
+                    allColumns={allColumns}
+                    tableId={tableId}
+                    columnCache={columnCache}
+                    selectableRows={selectableRows}
+                    filter={filter}
+                    filterArray={filterArray}
+                    progressPending={progressPending}
+                    data={dataSlice}
+                    columnsData={columnsData}
+                    onSelectedRowsChange={onSelectedRowsChange}
+                    setColumnsData={setColumnsData}
+                    selectableRowSelected={selectableRowSelected}
+
+                />}
             </div>
 
             {!paginationServer && !!data.length ? <Pagination
@@ -310,11 +305,11 @@ const DynamicDataTable = ( props ) => {
         </>
     );
 }
-
 DynamicDataTable.propTypes = {
     tableId: PropTypes.string.isRequired,
     columns: PropTypes.arrayOf( PropTypes.shape( {
-        id: PropTypes.string.isRequired
+        id: PropTypes.string.isRequired,
+        selector: PropTypes.string.isRequired
 
     } ) ),
     data: PropTypes.array.isRequired,
@@ -325,9 +320,12 @@ DynamicDataTable.propTypes = {
     className: PropTypes.string,
     filter: PropTypes.bool,
     filterArray: PropTypes.array,
-    ExpandedComponent: PropTypes.node,
+    ExpandedComponent: PropTypes.elementType,
     columnCache: PropTypes.bool,
-    rowPerPage: PropTypes.number
+    rowPerPage: PropTypes.number,
+    selectableRows: PropTypes.bool,
+    onSelectedRowsChange: PropTypes.func,
+    selectableRowSelected: PropTypes.func
 };
 
 export default DynamicDataTable

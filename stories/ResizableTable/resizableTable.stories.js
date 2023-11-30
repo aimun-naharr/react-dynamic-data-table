@@ -1,6 +1,6 @@
-import columns from "../../configs/columns"
-import data from '../../configs/fakeData.json'
-import ResizableTable from "./DynamicDataTable"
+import columns from '../../configs/columns'
+import allData from '../../configs/fakeData.json'
+import DynamicDataTable from "./DynamicDataTable"
 
 export default {
     title: 'Resizable Table',
@@ -9,6 +9,43 @@ export default {
 
 }
 
-export const Default = () => <ResizableTable tableId='12' mainClass='123' columns={columns} data={data} />
+export const Default = () => <DynamicDataTable
+    paginationServer
+    // expandableRows={true}
+    columns={columns}
+    // onSort={handleSort}
+    // className="react-custom-dataTable"
+    data={allData}
+    tableId='master-document-all-data-list'
+    columnCache={false}
+    progressPending={!true}
+    // onSelectedRowsChange={() => { }}
+    // selectableRowSelected={() => { }}
+    selectableRows={false}
+/>
 
-export const ExpandableRows = () => <ResizableTable tableId='expandable-table' mainClass='123' columns={columns} data={data} expandableRows={true} />
+export const ExpandableRows = () => <DynamicDataTable
+    paginationServer
+    expandableRows={true}
+    columns={columns}
+
+    data={allData}
+    tableId='master-document-all-data-list-2'
+    columnCache={false}
+    progressPending={!true}
+    selectableRows={false}
+
+/>
+
+
+export const SelectableRows = () => <DynamicDataTable
+    paginationServer
+    columns={columns}
+    onSelectedRowsChange={() => { }}
+    data={allData}
+    tableId='master-document-all-data-list-2'
+    columnCache={false}
+    progressPending={!true}
+    selectableRows={true}
+
+/>

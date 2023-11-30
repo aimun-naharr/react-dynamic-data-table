@@ -1,7 +1,7 @@
 .fixed-and-resize-table-container .resize-and-fixed-table {
   table-layout: fixed;
   width: 100%;
-  border-collapse: collapse;
+  border: none;
 }
 .fixed-and-resize-table-container .resize-and-fixed-table th,
 .fixed-and-resize-table-container .resize-and-fixed-table td {
@@ -13,8 +13,12 @@
   -moz-text-overflow: ellipsis;
   -ms-text-overflow: ellipsis;
   -o-text-overflow: ellipsis;
-  text-overflow: ellipsis;
-  border: 1px solid lightgray;
+  text-overflow: ellipsis !important;
+  outline: 1px solid rgb(208, 208, 216);
+  border: none;
+  padding: 5px;
+  min-width: 80px;
+  -webkit-min-width: 80px;
 }
 .fixed-and-resize-table-container .resize-and-fixed-table thead {
   background-color: #f9fafb;
@@ -25,7 +29,9 @@
   thead
   tr
   .table-header {
-  color: #6f7a8d;
+  color: #60646c;
+  position: sticky;
+  top: 0;
 }
 .fixed-and-resize-table-container
   .resize-and-fixed-table
@@ -46,24 +52,22 @@
   display: none;
   position: absolute;
   right: 2px;
-  top: 50%;
-  transform: translateY(-50%);
+  top: -10%;
   cursor: pointer;
+  z-index: 1;
 }
 .fixed-and-resize-table-container .resize-and-fixed-table tr .fixed-cell {
   position: -webkit-sticky !important;
   position: sticky !important;
-  z-index: 10;
-  background-color: #f1f1f1 !important;
-  outline: 1px solid lightgray;
+  z-index: 1;
+  background-color: #f9f9fb;
+  outline: 1px solid rgb(208, 208, 216);
   border: none;
 }
-.fixed-and-resize-table-container
-  .resize-and-fixed-table
-  tr
-  .fixed-cell:last-child {
-  /* background-color: red !important; */
-}
 .fixed-and-resize-table-container .resize-and-fixed-table tr:hover {
-  background-color: rgba(102, 51, 153, 0.055);
+  background-color: rgba(102, 51, 153, 0.199);
 }
+.fixed-and-resize-table-container .resize-and-fixed-table .selected-row {
+  background-color: rgba(102, 51, 153, 0.068);
+}
+/* width */
