@@ -48,6 +48,8 @@ const DynamicDataTable = ( props ) => {
     const [currentPage, setCurrentPage] = useState( 1 );
     const [fixedWidthArr, setFixedWidthArr] = useState( [] ); //stores fixed column widths
 
+    console.log( { columnsData } )
+
     //gets widths of all fixed columns and stores it in an array
     const getWidthOfFixedColumns = () => {
         const tableContainer = document.getElementById( tableId );
@@ -87,30 +89,30 @@ const DynamicDataTable = ( props ) => {
     };
 
 
-    // sorts tabele data
+    // sorts table data
     const handleSort = ( column ) => {
-        console.log( column.sortingOrder )
         const direction = column.sortingOrder === 'asc' ? 'desc' : 'asc';
+        let result = [...columnsData]
         if ( sortServer ) {
             onSort( column, direction );
         } else {
             if ( column.sortable ) {
                 if ( column.type === 'number' ) {
-                    console.log( column )
-                    columnsData.sort( ( a, b ) => {
-                        // if sorting order is true it will sort in ascending order
+                    result = result.sort( ( a, b ) => {
                         return column.sortingOrder === 'asc' ? a[column.selector] - b[column.selector] : b[column.selector] - a[column.selector];
                     } );
+
                 } else if ( column.type === 'date' ) {
-                    columnsData.sort( ( a, b ) => {
+                    result = result.sort( ( a, b ) => {
                         return column.sortingOrder === 'asc' ? new Date( a[column.selector] ) - new Date( b[column.selector] ) : new Date( b[column.selector] ) - new Date( a[column.selector] );
                     } );
                 } else {
-                    columnsData.sort( ( a, b ) => {
+                    result = result.sort( ( a, b ) => {
                         // console.log( a[column.selector] );
                         return column.sortingOrder === 'asc' ? a[column.selector].localeCompare( b[column.selector] ) : b[column.selector].localeCompare( a[column.selector] );
                     } );
                 }
+                setColumnsData( result )
             }
 
         }
@@ -165,7 +167,7 @@ const DynamicDataTable = ( props ) => {
                 }
             >
                 {!isSmallScreen ? <ResizableTable
-                    fixed={expandableRows && selectableRows ? fixedColumns?.length + 2 : expandableRows || selectableRows ? fixedColumns.length + 1 : 0}
+                    fixed={expandableRows && selectableRows ? fixedColumns?.length + 2 : expandableRows || selectableRows ? fixedColumns.length + 1 : fixedColumns.length}
                     // fixed={0}
                     responsive={true}
                     bordered

@@ -128,9 +128,11 @@ const TR = ( props ) => {
     };
 
     useEffect( () => {
-        const preSelectedRow = selectableRowSelected( row );
-        if ( preSelectedRow?.rowId === row?.rowId ) {
-            row.isSelected = true;
+        if ( selectableRowSelected ) {
+            const preSelectedRow = selectableRowSelected( row );
+            if ( preSelectedRow?.rowId === row?.rowId ) {
+                row.isSelected = true;
+            }
         }
     }, [] );
 
