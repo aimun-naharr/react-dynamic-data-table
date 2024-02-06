@@ -1,6 +1,6 @@
-import columns from '../../configs/columns'
-import allData from '../../configs/fakeData.json'
-import ResizableTable from "./DynamicDataTable"
+import columns from '../configs/columns'
+import allData from '../configs/fakeData.json'
+import ResizableTable from "../src/ResizableTable"
 
 export default {
     title: 'Resizable Table',
@@ -14,16 +14,14 @@ export default {
 
 export const Default = () => <ResizableTable
     paginationServer
-    // expandableRows={true}
+
     columns={columns}
-    // onSort={handleSort}
-    // className="react-custom-dataTable"
+
     data={allData}
     tableId='resizable-data-table-default'
     columnCache={false}
     progressPending={!true}
-    // onSelectedRowsChange={() => { }}
-    // selectableRowSelected={() => { }}
+
     selectableRows={false}
 />
 
