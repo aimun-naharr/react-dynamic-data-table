@@ -1,0 +1,94 @@
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --primary: 221.2 83.2% 53.3%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96.1%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 221.2 83.2% 53.3%;
+  --radius: 0.5rem;
+}
+.fixed-and-resize-table-container .small-table {
+  table-layout: fixed;
+  width: 100%;
+  border: none;
+  background-color: hsl(var(--background));
+  color: hsl(var(--secondary-foreground));
+  font-weight: 500;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+.fixed-and-resize-table-container .small-table th,
+.fixed-and-resize-table-container .small-table td {
+  margin-left: 0em;
+  margin-right: 0em;
+  font-size: 12.5px !important;
+  overflow: hidden;
+  /* white-space: unset; */
+  text-wrap: balance !important;
+  outline: 1px solid hsl(var(--secondary));
+  border: none;
+  padding: 5px;
+  min-width: 80px;
+  -webkit-min-width: 80px;
+  padding-block: 10px;
+}
+.fixed-and-resize-table-container .small-table thead {
+  background-color: hsl(var(--secondary));
+  color: hsl(var(--secondary-foreground));
+  top: 0;
+}
+.fixed-and-resize-table-container .small-table thead tr .table-header {
+  /* color: ; */
+  position: sticky;
+  top: 0;
+}
+.fixed-and-resize-table-container
+  .small-table
+  thead
+  tr
+  .table-header
+  p:hover
+  .fixed-icon {
+  display: block;
+}
+.fixed-and-resize-table-container
+  .small-table
+  thead
+  tr
+  .table-header
+  p
+  .fixed-icon {
+  display: none;
+  position: absolute;
+  right: 2px;
+  top: 10%;
+  cursor: pointer;
+  z-index: 1;
+}
+.fixed-and-resize-table-container .small-table tr .fixed-cell {
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  z-index: 1;
+  background-color: hsl(var(--popover));
+  outline: 1px solid hsl(var(--muted));
+  border: none;
+}
+.fixed-and-resize-table-container .small-table tr:hover {
+  background-color: rgba(102, 51, 153, 0.199);
+}
+.fixed-and-resize-table-container .small-table .selected-row {
+  background-color: rgba(102, 51, 153, 0.068);
+}
+/* width */

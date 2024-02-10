@@ -1,4 +1,4 @@
-const { randomIdGenerator } = require("../../../utility/utils");
+const { randomIdGenerator } = require("../utility/utils");
 
 
 const ChevronIcon = () => {

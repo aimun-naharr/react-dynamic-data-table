@@ -7,7 +7,6 @@ const columns = [
         // cell: (row) => row.documentType,
         sortable: true,
         width: "130px",
-        center: true,
         isFixed: true,
         unResizable: true
     },
@@ -18,7 +17,6 @@ const columns = [
         // cell: (row) => row.documentType,
         sortable: true,
         width: "130px",
-        center: true
 
     },
     {
@@ -28,7 +26,6 @@ const columns = [
         // cell: (row) => row.documentType,
         sortable: true,
         width: "130px",
-        center: true,
         isFixed: true,
         unResizable: true,
         type: 'number'
@@ -40,6 +37,7 @@ const columns = [
         // cell: (row) => row.documentType,
         sortable: true,
         width: "130px",
+        maxWidth: "250px",
         center: true
     },
     {
