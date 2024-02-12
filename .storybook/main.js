@@ -9,13 +9,18 @@ const config = {
     "@storybook/addon-essentials",
     "@storybook/addon-onboarding",
     "@storybook/addon-interactions",
+    '@storybook/addon-docs',
+
   ],
   framework: {
     name: "@storybook/react-webpack5",
     options: {},
   },
   docs: {
-    autodocs: "tag",
+    mdx: {
+      // Add the remark-gfm plugin to support GitHub Flavored Markdown
+      remarkPlugins: [require('remark-gfm')],
+    },
   },
 };
 export default config;

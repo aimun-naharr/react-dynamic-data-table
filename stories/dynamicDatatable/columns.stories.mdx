@@ -1,0 +1,44 @@
+import { Meta } from "@storybook/addon-docs";
+
+<Meta title="API Reference/Columns" id="api-columns" />
+
+# Column Definitions API
+
+| Column 1 | Column 2 | Column 3 |
+| -------- | -------- | -------- |
+| Value 1  | Value 2  | Value 3  |
+| Value 4  | Value 5  | Value 6  |
+
+# Columns Example
+
+```js
+const columns = [
+  {
+    name: "Title",
+    selector: (row) => row.title,
+  },
+  {
+    name: "Year",
+    selector: (row) => row.year,
+  },
+];
+```
+
+# Column ID's
+
+Internally, `columns` require an `id` property. Particularly, the `id` property is required if you use the `defaultSortFieldId` property and you want to define presorted columns by `id`. If you omit `id` from a column object, RDT will autogenerate `id` values starting at 1, 2, 3 and so on. It is, however, recommended that you use your own `id`, which can be either a `string` or a `number`.
+
+```js
+const columns = [
+  {
+    id: "title",
+    name: "Title",
+    selector: (row) => row.title,
+  },
+  {
+    id: "year",
+    name: "Year",
+    selector: (row) => row.year,
+  },
+];
+```
