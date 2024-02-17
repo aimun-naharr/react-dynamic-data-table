@@ -16,11 +16,6 @@ const config = {
     name: "@storybook/react-webpack5",
     options: {},
   },
-  docs: {
-    mdx: {
-      // Add the remark-gfm plugin to support GitHub Flavored Markdown
-      remarkPlugins: [require('remark-gfm')],
-    },
-  },
+
 };
 export default config;
