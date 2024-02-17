@@ -1,1 +1,1 @@
-export { default } from './DynamicDataTable';
+export { default } from "./DynamicDataTable";
