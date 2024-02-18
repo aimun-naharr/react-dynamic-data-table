@@ -7,14 +7,14 @@ import {
   useMemo,
   useState,
 } from "react";
-import { randomIdGenerator } from "./utility/utils";
-import SmallTable from "./SmallTable";
-import ResizableTable from "./table-widgets/ColumnResizer";
-import TH from "./table-widgets/TH";
-import TR from "./table-widgets/TR";
-import Pagination from "./table-widgets/custom-pagination";
-import useMediaQuery from "./table-widgets/custom-pagination/hooks/useMediaQuery";
+import SmallTable from "./SmallTable.jsx";
+import ResizableTable from "./table-widgets/ColumnResizer.jsx";
+import TH from "./table-widgets/TH.jsx";
+import TR from "./table-widgets/TR.jsx";
+import useMediaQuery from "./table-widgets/custom-pagination/hooks/useMediaQuery.jsx";
+import Pagination from "./table-widgets/custom-pagination/index.jsx";
 import "./table.css";
+import { randomIdGenerator } from "./utility/utils.js";
 
 const DynamicDataTable = (props) => {
   const {

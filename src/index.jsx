@@ -1,1 +1,1 @@
-export * from "./ResizableTable";
+export * from "./ResizableTable/index.jsx";
