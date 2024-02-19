@@ -1,4 +1,4 @@
-const { randomIdGenerator } = require("../utility/utils.js");
+import { randomIdGenerator } from "../utility/utils.js";
 
 const ChevronIcon = () => {
   return (

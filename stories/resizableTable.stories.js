@@ -1,9 +1,8 @@
 import columns from '../configs/columns'
 import allData from '../configs/fakeData.json'
-import ResizableTable from "../src/ResizableTable"
-
+import DynamicTable from '../src'
 export default {
-    title: 'Resizable Table',
+    title: 'Dynamic Table',
     component: 'Table',
     tags: ['autodocs'],
     // argTypes: {
@@ -12,7 +11,7 @@ export default {
 
 }
 
-export const Default = () => <ResizableTable
+export const Default = () => <DynamicTable
     paginationServer
 
     columns={columns}
@@ -26,7 +25,7 @@ export const Default = () => <ResizableTable
 />
 
 
-export const ExpandableRows = () => <ResizableTable
+export const ExpandableRows = () => <DynamicTable
     paginationServer
     expandableRows={true}
     columns={columns}
@@ -40,7 +39,7 @@ export const ExpandableRows = () => <ResizableTable
 />
 
 
-export const SelectableRows = () => <ResizableTable
+export const SelectableRows = () => <DynamicTable
     paginationServer
     columns={columns}
     onSelectedRowsChange={() => { }}

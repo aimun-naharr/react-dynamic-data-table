@@ -1,1 +1,2 @@
-export * from "./ResizableTable/index.jsx";
+import DynamicTable from "./table-components/index.jsx";
+export default DynamicTable;

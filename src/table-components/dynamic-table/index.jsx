@@ -7,14 +7,16 @@ import {
   useMemo,
   useState,
 } from "react";
-import SmallTable from "./SmallTable.jsx";
-import ResizableTable from "./table-widgets/ColumnResizer.jsx";
-import TH from "./table-widgets/TH.jsx";
-import TR from "./table-widgets/TR.jsx";
-import useMediaQuery from "./table-widgets/custom-pagination/hooks/useMediaQuery.jsx";
-import Pagination from "./table-widgets/custom-pagination/index.jsx";
+
+import SmallTable from "../table-widgets/small-table/SmallTable.jsx";
+import ResizableTable from "../table-widgets/ColumnResizer.jsx";
+import TH from "../table-widgets/TH.jsx";
+import TR from "../table-widgets/TR.jsx";
+import Pagination from "../table-widgets/custom-pagination/index.jsx";
+
+import useMediaQuery from "../table-widgets/custom-pagination/hooks/useMediaQuery.jsx";
 import "./table.css";
-import { randomIdGenerator } from "./utility/utils.js";
+import { randomIdGenerator } from "../utility/utils.js";
 
 const DynamicDataTable = (props) => {
   const {
@@ -366,6 +368,8 @@ const DynamicDataTable = (props) => {
     </>
   );
 };
+export default DynamicDataTable;
+
 DynamicDataTable.propTypes = {
   tableId: PropTypes.string.isRequired,
   columns: PropTypes.arrayOf(
@@ -389,5 +393,3 @@ DynamicDataTable.propTypes = {
   onSelectedRowsChange: PropTypes.func,
   selectableRowSelected: PropTypes.func,
 };
-
-export default DynamicDataTable;

@@ -8,28 +8,29 @@ import { terser } from 'rollup-plugin-terser';
 
 export default [
     {
-        input: './src/index.jsx',
+        input: 'src/index.jsx',
         output: [
             {
                 file: 'dist/index.js',
                 format: 'cjs',
+                exports: 'auto'
             },
             {
                 file: 'dist/index.es.js',
                 format: 'es',
-                exports: 'named',
+                exports: 'auto'
             }
         ],
         plugins: [
-            postcss( {
+            postcss({
                 plugins: [],
                 minimize: true,
-            } ),
+            }),
             commonjs(),
-            babel( {
+            babel({
                 exclude: 'node_modules/**',
-                presets: ['@babel/preset-react']
-            } ),
+                presets: [["@babel/preset-react", { runtime: "automatic" }],]
+            }),
             external(),
             resolve(),
             terser(),
