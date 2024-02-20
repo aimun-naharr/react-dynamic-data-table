@@ -2,6 +2,12 @@
 
  Welcome to React Dynamic DataTable, a powerful and flexible React data table library designed to supercharge your data presentation in web applications. Whether you're building a robust dashboard, a comprehensive management system, or a data-driven application, our library empowers you with a feature-rich and customizable data table component.
 
+
+ ### Installation
+ ```
+npm i react-dynamic-data-table-component
+```
+### let's try to use it
 ```
 import DynamicTable from 'react-dynamic-data-table-component;
 
