@@ -30,7 +30,7 @@ const data=[
     "id": 1,
     "name": "John Doe",
     "age": 25,
-    "email": "johndoe@example.comdddddddddddddddd",
+    "email": "johndoe@example.com",
     "address": "142 Center Street, Los Angeles, CA 90012",
     "city": "Anytown",
     "country": "USA",
