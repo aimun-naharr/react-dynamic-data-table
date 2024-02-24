@@ -15,7 +15,7 @@ npm i react-dynamic-data-table-component
 ```
 ### let's try to use it
 ```
-import DynamicTable from 'react-dynamic-data-table-component;
+import DynamicTable from 'react-dynamic-data-table-component';
 
 const columns = [
     {
