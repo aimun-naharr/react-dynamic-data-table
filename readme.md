@@ -9,13 +9,14 @@
 * Pagination
 * Selectable rows
 * Responsive
+* Expandable rows
 
 
  ### Installation
  ```
 npm i react-dynamic-data-table-component
 ```
-### let's try to use it
+### Let's try to use it
 ```
 import DynamicTable from 'react-dynamic-data-table-component';
 
@@ -67,10 +68,36 @@ const data=[
 data={data}
 columns={columns}
 tableId='AN_UNIQUE_ID'
-columnCache={false} //or it will persist fixed table columns to localstorage
 />
 ```
 
+### Selectable rows
+
+```
+const handleSelectedRows=()=>{}
+
+<DynamicTable
+data={data}
+columns={columns}
+tableId='AN_UNIQUE_ID'
+selectableRows
+onSelectedRowsChange={handleSelectedRows}
+/>
+```
+
+### Expandable Rows
+
+```
+const ExpandableComponent=()=>{}
+
+<DynamicTable
+data={data}
+columns={columns}
+tableId='AN_UNIQUE_ID'
+expandableRows
+ExpandedComponent={ExpandableComponent}
+/>
+```
 
 
 
