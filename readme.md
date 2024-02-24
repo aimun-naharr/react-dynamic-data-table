@@ -30,7 +30,7 @@ const columns = [
     {
         id: 'addressId',
         name: "Address",
-         cell: (row) => row.documentType,
+         cell: (row) => row.address,
         sortable: true,
         width: "130px",
 
